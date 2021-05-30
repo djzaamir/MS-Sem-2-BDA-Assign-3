@@ -1,5 +1,4 @@
 import json
-from kafka.vendor.six import X
 import pandas as pd 
 from kafka import KafkaProducer
 import threading
@@ -29,12 +28,19 @@ def producer(topic_name, file_a_uri):
 def main():
 
     topic_name = "pokec_user_data_stream"     
-    files = ["/home/djzaamir/Desktop/Pokec_Cleaned_Data/pokec_chunk_a.csv",
-             "/home/djzaamir/Desktop/Pokec_Cleaned_Data/pokec_chunk_b.csv",
-             "/home/djzaamir/Desktop/Pokec_Cleaned_Data/pokec_chunk_c.csv"]
+
+    # For Main machine
+    files = ["/home/djzaamir/Desktop/BDA-Assignment-1-Data/Cleaned-Data/pokec_chunk_a.csv",
+             "/home/djzaamir/Desktop/BDA-Assignment-1-Data/Cleaned-Data/pokec_chunk_b.csv",
+             "/home/djzaamir/Desktop/BDA-Assignment-1-Data/Cleaned-Data/pokec_chunk_c.csv"] 
+    # For Tab
+    # files = ["/home/djzaamir/Desktop/Pokec_Cleaned_Data/pokec_chunk_a.csv",
+    #          "/home/djzaamir/Desktop/Pokec_Cleaned_Data/pokec_chunk_b.csv",
+    #          "/home/djzaamir/Desktop/Pokec_Cleaned_Data/pokec_chunk_c.csv"]
 
     _threads = []
     for file in files:
+        print(f"Streaming = {file}")
         t = threading.Thread(target=producer, args=(topic_name, file))
         t.start()
         _threads.append(t)
