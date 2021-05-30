@@ -1,4 +1,5 @@
 import json
+from kafka.vendor.six import X
 import pandas as pd 
 from kafka import KafkaProducer
 import threading
@@ -28,25 +29,20 @@ def producer(topic_name, file_a_uri):
 def main():
 
     topic_name = "pokec_user_data_stream" 
+x    
+    files = ["/home/djzaamir/Desktop/Pokec_Cleaned_Data/pokec_chunk_a.csv",
+             "/home/djzaamir/Desktop/Pokec_Cleaned_Data/pokec_chunk_b.csv",
+             "/home/djzaamir/Desktop/Pokec_Cleaned_Data/pokec_chunk_c.csv"]
 
-    file_a_uri = "/home/djzaamir/Desktop/Pokec_Cleaned_Data/pokec_chunk_a.csv"
-    file_b_uri = "/home/djzaamir/Desktop/Pokec_Cleaned_Data/pokec_chunk_b.csv"
-    file_c_uri = "/home/djzaamir/Desktop/Pokec_Cleaned_Data/pokec_chunk_c.csv"
-    
 
+    _threads = []
+    for file in files:
+        t = threading.Thread(target=producer, args=(topic_name, file))
+        t.start()
+        _threads.append(t)
 
-    t1 = threading.Thread(target=producer, args=(topic_name, file_a_uri))
-    t1.start()
-
-    t2 = threading.Thread(target=producer, args=(topic_name, file_b_uri))
-    t2.start()
-    
-    t3 = threading.Thread(target=producer, args=(topic_name, file_c_uri))
-    t3.start()
-    
-    t1.join()
-    t2.join()
-    t3.join()
+    for t in _threads:
+        t.join()
 
 if __name__ == "__main__":
     main()
