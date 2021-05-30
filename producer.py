@@ -28,12 +28,10 @@ def producer(topic_name, file_a_uri):
 
 def main():
 
-    topic_name = "pokec_user_data_stream" 
-x    
+    topic_name = "pokec_user_data_stream"     
     files = ["/home/djzaamir/Desktop/Pokec_Cleaned_Data/pokec_chunk_a.csv",
              "/home/djzaamir/Desktop/Pokec_Cleaned_Data/pokec_chunk_b.csv",
              "/home/djzaamir/Desktop/Pokec_Cleaned_Data/pokec_chunk_c.csv"]
-
 
     _threads = []
     for file in files:

@@ -3,16 +3,9 @@ from producer import main
 import pandas as pd
 from kafka import KafkaConsumer
 
-
-
-
-
-
-
-
-
-
-
+# Hot-Cache
+# A dict containing keys as food names & values as IDs
+food_user = {}
 
 def main():
 
