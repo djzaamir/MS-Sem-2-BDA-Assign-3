@@ -19,9 +19,18 @@ def main():
 
 
     for streaming_data in k_consumer_a:
+        print(food_user)
+        _id = streaming_data.value["user_id"]
+        for f in streaming_data.value["I_most_enjoy_good_food"].split():
+            
+            if f in food_user:
+                food_user[f].append(_id)
+            else:
+                food_user[f] = [_id]
 
-        print(streaming_data.value["AGE"])
 
+    # Print food_user hot cache
+    print(food_user)
 
 if __name__ == "__main__":
     main()
