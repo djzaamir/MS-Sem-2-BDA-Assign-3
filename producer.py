@@ -37,8 +37,16 @@ def main():
 
     t1 = threading.Thread(target=producer, args=(topic_name, file_a_uri))
     t1.start()
+
+    t2 = threading.Thread(target=producer, args=(topic_name, file_b_uri))
+    t2.start()
+    
+    t3 = threading.Thread(target=producer, args=(topic_name, file_c_uri))
+    t3.start()
     
     t1.join()
+    t2.join()
+    t3.join()
 
 if __name__ == "__main__":
     main()
