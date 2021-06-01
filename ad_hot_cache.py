@@ -20,7 +20,7 @@ def main():
 
     for streaming_data in k_consumer_a:
         print(food_user)
-        _id = streaming_data.value["user_id"]
+        _id = streaming_data.value["user_id"]   
         for f in streaming_data.value["I_most_enjoy_good_food"].split():
             
             if f in food_user:
