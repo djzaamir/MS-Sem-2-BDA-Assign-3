@@ -27,12 +27,24 @@ def main():
 
     m_client = MongoClient()
 
+    age_total = 0
+    height_total = 0
+    weight_total =0
+    n = 0
+
+  
+  
     print("Waiting for Streaming Data (KMeans Realtime Clustering)")
     for stream_data in k_consumer:
         
+        n += 1
 
         lowest_distance = math.inf
         group = None
+        age_total += float(stream_data.value["AGE"])
+        height_total += float(stream_data.value["Height"])
+        weight_total += float(stream_data.value["Weight"])
+
         new_entry = [float(stream_data.value["AGE"]) , float(stream_data.value["Height"]), float(stream_data.value["Weight"]), float(stream_data.value["BMI"])]
         for (i,center) in enumerate(centroids):
             d = euclidDistance(center, new_entry)
@@ -43,7 +55,9 @@ def main():
         #Push to mongo
         m_client.k_means.k_m_c.insert_one({"group" : group  })
 
-
+        m_client.data_means.d_means.update_one({"metric" : "ageMean"}, {"$set" : {"mean" : age_total / n}})
+        m_client.data_means.d_means.update_one({"metric" : "heightMean"}, {"$set" : {"mean" : height_total / n}})
+        m_client.data_means.d_means.update_one({"metric" : "weightMean"}, {"$set" : {"mean" : weight_total / n}})
 
 
 if __name__ == "__main__":

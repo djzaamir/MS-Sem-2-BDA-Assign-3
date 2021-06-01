@@ -4,8 +4,8 @@ import pandas as pd
 from kafka import KafkaConsumer
 
 # Hot-Cache
-# A dict containing keys as food names & values as IDs
-food_user = {}
+# A dict containing keys as smocking-attribute names & values as IDs
+smocking_type_user = {}
 
 def main():
 
@@ -19,18 +19,18 @@ def main():
 
 
     for streaming_data in k_consumer_a:
-        print(food_user)
+        
         _id = streaming_data.value["user_id"]   
-        for f in streaming_data.value["I_most_enjoy_good_food"].split():
+        _smockingStatus = streaming_data.value["SmokingStatus"]
             
-            if f in food_user:
-                food_user[f].append(_id)
-            else:
-                food_user[f] = [_id]
+        if _smockingStatus in smocking_type_user:
+            smocking_type_user[_smockingStatus].append(_id)
+        else:
+            smocking_type_user[_smockingStatus] = [_id]
 
 
     # Print food_user hot cache
-    print(food_user)
+    print(smocking_type_user)
 
 if __name__ == "__main__":
     main()

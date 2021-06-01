@@ -2,7 +2,7 @@ import json
 import pandas as pd 
 from kafka import KafkaProducer
 import threading
-
+import time
 
 def producer(topic_name, file_a_uri):
 
@@ -14,7 +14,7 @@ def producer(topic_name, file_a_uri):
                                value_serializer=lambda x: json.dumps(x).encode("utf-8")                              )
 
      # Start Streaming data to apache-kafka
-    num_records_to_send  = 5
+    num_records_to_send  = 50
     i = 1
     for data_tuple in df_pokec_a.itertuples():
 
@@ -26,8 +26,8 @@ def producer(topic_name, file_a_uri):
 
         if i == num_records_to_send:
             break
-        i += 1 
-
+        
+        time.sleep(0.5)
 
 def main():
 
