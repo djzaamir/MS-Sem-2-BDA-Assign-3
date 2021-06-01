@@ -14,15 +14,19 @@ def producer(topic_name, file_a_uri):
                                value_serializer=lambda x: json.dumps(x).encode("utf-8")                              )
 
      # Start Streaming data to apache-kafka
+    num_records_to_send  = 5
+    i = 1
     for data_tuple in df_pokec_a.itertuples():
 
         obj_to_stream = {}
         for col_i in range(df_pokec_a.columns.shape[0]):
-            obj_to_stream[df_pokec_a.columns[col_i]] = data_tuple[col_i]
+            obj_to_stream[df_pokec_a.columns[col_i]] = data_tuple[col_i+1]
         
         k_producer_a.send(topic=topic_name,value=obj_to_stream)
 
-        break
+        if i == num_records_to_send:
+            break
+        i += 1 
 
 
 def main():

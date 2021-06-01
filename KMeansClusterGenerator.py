@@ -14,10 +14,10 @@ def main():
     topic_name = "pokec_user_data_stream" 
     k_groups = ["a", "b","c", "d", "e"]
     # List of centroids obtained by running KMeans on historical data
-    centroids = [[ 17.06885379, 150.18104496,  39.91130012,  17.88511185]
-                 [ 22.42164308, 181.86572316,  73.81014843,  22.39042891]
-                 [ 24.60374415, 185.90119605,  93.33541342,  27.11410181]
-                 [ 20.92698048, 172.24845006,  62.7836969,   21.21083215]
+    centroids = [[ 17.06885379, 150.18104496,  39.91130012,  17.88511185],
+                 [ 22.42164308, 181.86572316,  73.81014843,  22.39042891],
+                 [ 24.60374415, 185.90119605,  93.33541342,  27.11410181],
+                 [ 20.92698048, 172.24845006,  62.7836969,   21.21083215],
                  [ 20.24362774, 163.56431535,  52.43301719,  19.7061175 ]]
 
     k_consumer = KafkaConsumer(topic_name,
@@ -27,11 +27,13 @@ def main():
 
     m_client = MongoClient()
 
+    print("Waiting for Streaming Data (KMeans Realtime Clustering)")
     for stream_data in k_consumer:
+        
 
         lowest_distance = math.inf
         group = None
-        new_entry = [stream_data.value["AGE"] , stream_data.value["Height"], stream_data.value["Weight"],stream_data.value["BMI"]]
+        new_entry = [float(stream_data.value["AGE"]) , float(stream_data.value["Height"]), float(stream_data.value["Weight"]), float(stream_data.value["BMI"])]
         for (i,center) in enumerate(centroids):
             d = euclidDistance(center, new_entry)
             if d < lowest_distance:
